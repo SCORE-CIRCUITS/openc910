@@ -28,7 +28,7 @@ __start:
 
 # enable extension
   li   x3, 0x400000
-  csrs mxstatus,x3
+  csrs 0x7c0,x3
 
 # enable fpu
   li   x3, 0x6000
@@ -40,14 +40,14 @@ __start:
 
 # enable unalign
   li   x3, 0x8000
-  csrs mxstatus,x3
+  csrs 0x7c0,x3
 
-# mxstatus
+# 0x7c0
   li   x3, 0x638000
-  csrs mxstatus,x3
+  csrs 0x7c0,x3
   
 # msmpr
-  csrsi msmpr, 0x1
+  csrsi 0x7f3, 0x1
 
 # PART 1: initialize all registers
   li  x1, 0
@@ -107,7 +107,7 @@ cpu_0_sp:
   # li x3, 0x10f7
   # csrs 0x7c1,x3  #mhcr
   li x3, 0x11ff
-  csrs mhcr,x3  #mhcr
+  csrs 0x7c1,x3  #mhcr
   
   .global after_l2en 
 after_l2en:
@@ -115,17 +115,17 @@ after_l2en:
   # li x3, 0x4
   # csrs 0x7c1,x3  #mhcr
   li x3, 0x11ff
-  csrs mhcr,x3  #mhcr
+  csrs 0x7c1,x3  #mhcr
 
   # enable lbuf,way_pred,data_cache_prefetch, amr
   # li x3, 0x7e30c
   # csrs 0x7c5,x3   #mhint
   li x3, 0x6e30c
-  csrs mhint,x3   #mhint
+  csrs 0x7c5,x3   #mhint
 
   # mccr2
   li x3, 0xe0000009
-  csrs mccr2,x3 
+  csrs 0x7c3,x3 
 
   jal	main
 
@@ -135,7 +135,7 @@ __exit:
   addi x1,x0,0x5a
   addi x2,x0,0x6b
   addi x3,x0,0x7c
-  sync
+  fence
   li   x3, 0x444333222
   add x4,x0,x3
 #
@@ -144,7 +144,7 @@ __fail:
   addi x10,x0,0x0
   addi x1,x0,0x2c
   addi x2,x0,0x3b
-  sync
+  fence
   li x3,0x2382348720
 
 .section .text

@@ -27,21 +27,12 @@ OBJECTS = $(SSRC:%.S=%.o) $(sSRC:%.s=%.o) $(CSRC:%.c=%.o)
 
 
 FLAG_ABI = 
-# FLAG_MARCH = -mtune=c920 
-FLAG_MARCH = -mtune=c910
-#CPU_ARCH_FLAG_0 => CPU Arch: c910
-ifeq (${CPU_ARCH_FLAG_0}, c910)
-  FLAG_MARCH += -march=rv64imafdcxtheadc
-  FLAG_ABI   = -mabi=lp64d
-else
-  FLAG_MARCH += -march=rv64imafdcvxtheadc
-  FLAG_ABI   = -mabi=lp64dv
-endif
+FLAG_ABI = -mabi=lp64d
+FLAG_MARCH = -march=rv64gc
 CFLAGS = ${FLAG_MARCH} ${FLAG_ABI} 
 
 ifeq (${CASENAME}, coremark)
-  CFLAGS += -c -O3 -mtune=c910 -static -funroll-all-loops -finline-limit=500 -fgcse-sm -fno-schedule-insns --param max-rtl-if-conversion-unpredictable-cost=100 -msignedness-cmpiv -fno-code-hoisting -mno-thread-jumps1 -mno-iv-adjust-addr-cost -mno-expand-split-imm -DITERATIONS=10000
-  # CFLAGS += -c -v -funroll-all-loops -finline-limit=500 -fgcse-sm -fno-schedule-insns --param max-rtl-if-conversion-unpredictable-cost=100 -fno-code-hoisting -mno-thread-jumps1 -mno-iv-adjust-addr-cost -DITERATIONS=10000 -O3 -static -mbit-translate
+  CFLAGS += -c -O3 -static -funroll-all-loops -finline-limit=500 -DITERATIONS=1
 else
   CFLAGS += -c -O2
 endif

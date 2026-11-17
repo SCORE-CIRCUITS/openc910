@@ -15,6 +15,9 @@ limitations under the License.
 #ifndef __DATATYPE_H__
 #define __DATATYPE_H__
 
+#include <stdint.h>
+#include <stddef.h>
+
 typedef	unsigned char           uint8_t;
 typedef unsigned short          uint16_t;
 typedef unsigned int            uint32_t;
